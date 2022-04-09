@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+       <head>
+
+              <title>&#128375; World3</title>
+              <meta charset="UTF-8">
+
+                     <style type="text/css">
+
+                            body {
+                                   background-image: url('/images/world3.jpg');
+                                   height:500px;
+                                   background-repeat: no-repeat;
+                                   background-attachment: fixed;
+                            }
+
+                            h1 {
+                                   color:white;
+                                   font-size:20px;
+                            }
+
+                            a:link {
+                                   color:white;
+                            }
+
+                            a:visited {
+                                   color:white;
+                            }
+
+                            a:hover {
+                                   color:red;
+                            }
+
+                            a:active {
+                                   color:springgreen;
+                            }
+                            
+                            footer {               
+                                   position:fixed;
+                                   bottom: 0;
+                                   height: 50px;
+                            }
+
+                     </style>
+
+       </head>
+
+       <body>
+
+              <h1>It is great to see you again Andrew Garfield!</h1>
+              <p><a style="font-size:1rem;"  th:href="@{/}"> Back to Application form </a></p>
+              
+              <!--EZ ÍGY MÚŰKÖDIKKK 1 --> 
+<!--              <form th:action="@{/World3}" th:object="${Obj}">
+                     <input type="checkbox" th:field="*{readDoc}"/>
+              </form>-->
+
+              <!--EZ ÍGY MŰKÖDIKKK--> 
+<!--              <form th:action="@{/World3}" th:object="${Obj}">
+
+                     <div th:each="movie : ${filmAdatok}">
+                            <input type="checkbox" th:field="*{check}"/>
+                     </div>
+
+              </form>-->
+              
+              <form th:action="@{/World3}" th:object="${Obj}" method="post">
+
+                            <!-- Actual Movies in cinema with descriptions TABLE -->
+                            <table style="background-color:#f5f5f0;">
+
+                                   <tr>
+                                          <td>
+                                                 <span style="font-weight:bold; font-size:25px;" th:text="  'Movies - Westend'  "></span><hr>
+                                          </td>
+                                   </tr>
+
+                                   <div th:each="movie : ${filmAdatok}">
+
+                                          <tr>
+                                                 <td>
+                                                        <div style="font-weight:bold;" th:text="${movie.title}"></div>
+                                                        <div th:text="${movie.cinema}"></div>
+                                                        <div th:text="${movie.releaseDate}"></div>
+                                                        <div style="font-size:12px;" th:text="${movie.storyText}"></div><br>
+
+                                                        <input type="checkbox" th:value="${movie.id}" name="kedvencFilm"/>           name "kedvencFilm" névbe fogja tárolni, azaz "kedvencFilm" fogja tárolni mint List a movie.id-kat!!!
+
+                                                        <hr>
+                                                 </td>
+                                          </tr>
+
+                                   </div>
+
+                                   <!-- Iterate through 'moviesForWORLD3' to put each titles to a radiobutton in order to give a choice to user of favourite movie from 'Movies' table --> 
+                                   <tr>
+                                          <td>
+                                                 <div style="color:dodgerblue; font-weight:bold;" th:text=" 'Favourite: '  "></div>
+                                                 <span style="margin-right: 20px;" th:each="item : ${moviesForWORLD3}">
+                                                        <input type="radio" th:field="${Obj.moviesRadioWorld3}" th:value="${item.value}" th:text="${item.display}"/>
+                                                        <!--LEARN: utána nézni a radiobuttons-nek ha többet rakok ugyanolyan value-val egy lapra akkor mi a különbség és mi nem-->
+                                                 </span>
+                                          </td>
+                                   </tr>
+
+                                   <tr>
+                                          <td>
+                                                 <div>
+                                                        <button style="border-color: chartreuse;" type="submit" class="own_button_style">Save</button><br></br>
+                                                 </div>
+                                          </td>
+                                   </tr>
+
+                            </table><br></br>
+
+                            <table style="background-color:#cce6ff;">
+
+                                   <tr>
+                                          <td>
+                                                 <span style="font-weight:bold; font-size:25px;" th:text="  'Already watched movies'  "></span><hr>
+                                          </td>
+                                   </tr>
+                                   
+                                   <div th:each=" filmID : ${moviesForm.kedvencFilm}">
+                                          
+                                          <tr>
+                                                 <td>
+                                                        <div th:text="${filmID}"></div>
+                                                 </td>
+                                          </tr>
+                                          
+                                   </div>
+                                   
+
+                            </table>
+
+              </form>
+                     
+       </body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+       <head>
+
+              <title>&#127744; MULTIVERSE</title>
+              <meta charset="UTF-8">
+
+                     <!-- hivatkozni egy CSS fájlra -->
+                     <link rel="stylesheet" th:href="@{/css/global.css}"/>
+                     
+                     <style type="text/css">
+
+                            body {
+                                   background-image: url('/images/multiverse.jpg');
+                                   height:500px;
+                                   background-repeat: no-repeat;
+                                   background-attachment: fixed;
+                            }
+
+                            h1 {
+                                   color:black;
+                                   font-size:20px;
+                            }
+
+                            a:link, a:visited {         
+                                   color:black;
+                            }
+
+                            a:hover {
+                                   color:red;
+                            }
+
+                            a:active {
+                                   color:springgreen;
+                            }
+
+                            table, th, td{
+                                   border: 1px solid red;
+                            }
+                            
+                            footer{               /* footer position to the bottom of page */
+                                   position:fixed;
+                                   bottom: 0;
+                                   height: 50px;
+                            }
+                            
+                            .dropbtn {
+                                   background-color: #00cc7a;
+                                   color: white;
+                                   padding: 16px;
+                                   font-size: 16px;
+                                   border: none;
+                            }
+                            
+                            .dropdown {
+                                   position: relative;
+                                   display: inline-block;
+                            }
+
+                            .dropdown-content {
+                                   display: none;
+                                   position: absolute;
+                                   background-color: #f1f1f1;
+                                   min-width: 200px;           /* width of text in a drop-down row */
+                                   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                                   z-index: 1;
+                            }
+
+                            .dropdown-content a {
+                                   color: black;
+                                   padding: 12px 18px;
+                                   text-decoration: none;
+                                   display: block;
+                            }
+                            
+                            .dropdown-content a:hover {
+                                   background-color: #ddd;
+                            }
+
+                            .dropdown:hover .dropdown-content {
+                                   display:table-cell;
+                            }
+
+                            .dropdown:hover .dropbtn {
+                                   background-color: #00b36b;
+                            }
+
+                     </style>
+
+       </head>
+
+       <body>
+
+              <h1>It has begun...</h1>
+              
+              <div class="dropdown">
+                     
+                     <button class="dropbtn">Worlds</button>
+                     
+                     <div class="dropdown-content">
+                            <a th:href="@{/}">Application form &#127968;</a>
+                            <a th:href="@{/World2}">World2 &#128375;</a>
+                            <a th:href="@{/World3}">World3 &#128375;</a>
+                            <a th:href="@{/Multiverse}">Multiverse &#127744;</a>
+                     </div>
+                     
+              </div>
+              
+              <div class="dropdown">
+                     
+                     <button class="dropbtn">Health</button>
+                     
+                     <div class="dropdown-content">
+                            <a th:href="@{/Vitamins}">Vitamins &#128138;</a>
+                            <a th:href="@{/Liquid}">Liquid &#129380;</a>
+                            <a th:href="@{/Food}">Food Consumption &#129386;</a>
+                     </div>
+                     
+              </div>
+
+              <div> <em>Tobey</em> </div>
+              <div> <i>Andrew</i> </div>
+              <div> <strong>Tom</strong> </div>
+              <code>public void killEnemies() {}</code>
+
+              <table bgcolor="silver">
+                     <caption>Monthly savings</caption>
+                     <tr>
+                            <th>Release</th>
+                            <th>Movie name</th>
+                     </tr>
+                     <tr>
+                            <td>Spider man No way home</td>
+                            <td>17th Dec</td>
+                     </tr>
+                     <tr>
+                            <td>Multiverse of madness</td>
+                            <td>6th May</td>
+                     </tr>
+              </table>
+
+              <ul>
+                     <li>Octopus</li>
+                     <li>Green Goblin</li>
+                     <li>Electro</li>
+              </ul>
+              
+              <ol> 
+                     <li>Mary Jane</li>
+                     <li>Gwen Stacy</li>
+                     <li>MJ</li>
+              </ol>
+              
+              <div>
+                     <audio controls>
+                            <source th:src="@{/songs/spider_man.mp3}" type="audio/ogg">
+                            <source th:src="@{/songs/spider_man.mp3}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                     </audio>
+              </div>
+              
+              <label for="browser">Choose movie from the list:</label>
+              <input list="browsers" name="browser" id="azonosito" size="25">
+              <datalist id="browsers">
+                     <option value="Spider man - No way Home">
+                     <option value="Spider man 3">
+                     <option value="The amazing Spider man">
+                     <option value="Matrix 4">
+                     <option value="Jungle tour">
+              </datalist>
+              
+              <div> <a style="color:blue;" th:href="@{/World2}">Jump to World2</a> </div>
+
+              <div> <a style="color:blue;" th:href="@{/World3}">Jump to World3</a> </div>
+              
+              <div> <a style="color:blue;" th:href="@{/World3}" target="_blank">Jump to World3 on new webpage</a> </div>
+
+              <div><a th:href="@{/}"><img src="/images/return.png" alt="vissza a főoldalra" width="40" height="40"></a></div>
+
+              <footer>
+                     <div> <a style="font-size:2rem;"  th:href="@{/}"> Back to Application form </a> </div>
+              </footer>
+
+       </body>
+
+</html>

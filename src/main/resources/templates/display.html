@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head> 
+        <meta charset="UTF-8"/> 
+        <title th:text="'Registration successful'"></title>
+        
+        <style type="text/css">
+               
+              .blue {
+                     color:blue;
+                     font-size:20px;
+              }
+              
+              a:link {
+                     color:blue;
+              }
+
+              a:visited {
+                     color:blue;
+              }
+
+              a:hover {
+                     color:red;
+              }
+
+              a:active {
+                     color:springgreen;
+              }
+              
+         </style>
+        
+</head>
+
+<body> <h1 align=center th:text="'------------Validation was successful------------'" />
+       
+       <span th:text = "'Your registration data'" class='blue'> </span>
+       
+       <p>
+               <span th:text="'Your name: ' + ${Obj.firstName} + ' ' + ${Obj.lastName}"></span>
+       </p>
+       
+       <p>
+               <span th:text="'Today is: ' + ${#dates.format(Obj.datum, 'yyyy.MM.dd')}">Date1</span>
+       </p>
+       
+        <p>
+               <span th:text="'Your chosen language: ' + ${Obj.radioResult}"></span>
+       </p>
+       
+       <p>
+               <span th:text="'Your birthday: ' + ${Obj.yearNumber} + '-' + ${Obj.monthNumber} + '-' + ${Obj.dayNumber}"></span>
+       </p>
+       
+        <p>
+               <span th:text="'Trip to date: ' + ${Obj.DateToTrip}"></span>
+       </p>
+
+       <div> <a th:href="@{/}"> Back to Application form </a> </div>
+        
+</body>
+</html>
+

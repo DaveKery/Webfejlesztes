@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+       <head> 
+              <meta charset="UTF-8"/>  
+
+              <!-- text for the top of page -->
+              <title>&#127968; Registration</title>    
+
+              <style type="text/css">
+
+                     .top-background {
+                            background: url('/images/whopper.png') no-repeat center center;
+                            height:350px;
+                            color:black;
+                            text-shadow: #444 0 1px 1px;
+                     }
+
+                     .datecolor {
+                            color:dodgerblue;
+                            font-size:15px;
+                     }
+
+                     .green {
+                            color:#00cc00;
+                            font-size:15px;
+                     }
+
+                     h1 {
+                            color:royalblue;
+                     }
+
+                     h2 {
+                            color:purple;
+                            font-size:20px;
+                     }
+
+                     .errorRed {
+                            color:red;
+                            font-size:15px;
+                     }
+
+                     .mandatoryField {
+                            color:red;
+                            font-size:13px;
+                     }
+
+                     .errorField {
+                            border-color: red;
+                     }
+
+                     body {
+                            background-image: url('/images/background.jpg');
+                            background-repeat: no-repeat;
+                            background-attachment: fixed;
+                     }
+
+                     td {
+                            padding:5px;
+                            vertical-align: top;
+                     }
+
+                     button {
+                            padding: 10px;
+                            margin-right: 10px;
+                     }
+
+                     .own_button_style:link, .own_button_style:visited {
+                            background-color: slateblue;
+                            border: 2px solid crimson;
+                            color: black;
+                            padding: 5px 10px;
+                            display: inline-block;
+                     }
+
+                     .own_button_style:hover, .own_button_style:active {
+                            background-color: grey;
+                            color: white;
+                     }
+
+                     a:link {
+                            color:blue;
+                     }
+
+                     a:visited {
+                            color:blue;
+                     }
+
+                     a:hover {
+                            color:red;
+                     }
+
+                     a:active {
+                            color:springgreen;
+                     }
+
+              </style>
+
+       </head>
+
+       <body> <h1 align=center th:text="'------------HEADQUARTER------------'" />
+
+              <div class="top-background">
+                     <div class="container">
+                            <h1 style="color:black;">Control panels</h1>
+                            <p class="lead">This page consists of control panels that lead you to various pages by giving the correspoding usernames and passwords</p>
+                     </div>
+              </div>
+              
+              
+              <form th:action="@{/}" th:object="${Obj}" method="post">
+
+                      <!--REGISTRATION TABLE UPPER SIDE--> 
+                     <table style="background-color:#FFFFE0; border: 2px solid black;">
+                            
+                            <tr>
+                                   <td>
+                                          <h2 th:text="Registration"></h2>
+                                   </td>
+                            </tr>
+
+                            <tr> 
+                                   <td>
+                                          First name<sup class="mandatoryField">*</sup>
+                                   </td>
+
+                                   <td>
+                                          <input type="text" th:field="*{firstName}" 
+                                                 class="green" maxlength="10" size="25" th:errorclass="errorField"
+                                                 title="Kerem a nevet" placeholder="Name example"/>
+                                          <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="errorRed"></div>
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                   <td>
+                                          Last name<sup class="mandatoryField">*</sup>
+                                   </td>
+
+                                   <td>
+                                          <input type="text" th:field="*{lastName}" class="green" th:errorclass="errorField"/> 
+                                          <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="errorRed"></div>
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                   <td>
+                                          Password<sup class="mandatoryField">*</sup>
+                                   </td>
+
+                                   <td>
+                                          <input type="password" th:field="*{userPassword}" th:errorclass="errorField"/>
+                                          <div th:if="${#fields.hasErrors('userPassword')}" th:errors="*{userPassword}" class="errorRed"></div>
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                   <td>
+                                          <span>Date</span>
+                                   </td>
+
+                                   <td>
+                                          <span th:text="${#dates.format(Obj.datum, 'yyyy.MM.dd')}" class="datecolor">Date1</span>
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                   <td>
+                                          Language
+                                   </td>
+
+                                   <td>
+                                          <span style="margin-right: 20px;" th:each="item : ${languages}">
+                                                 <input type="radio" th:field="*{radioResult}" th:value="${item.value}" th:text="${item.display}"/>
+                                          </span>
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                   <td>
+                                          Date of Birth
+                                   </td>
+
+                                   <td>
+                                          <select th:field="*{yearNumber}">
+                                                 <option th:each=" y : ${#numbers.sequence(1900,2021)}" th:value="${y}" th:text="${y}"></option>
+                                          </select>
+
+                                          <select th:field="*{monthNumber}">
+                                                 <option th:each=" m : ${#numbers.sequence(1,12)}" th:value="${m}" th:text="${m}"></option>
+                                          </select>
+
+                                          <select th:field="*{dayNumber}">
+                                                 <option th:each=" d : ${#numbers.sequence(1,31)}" th:value="${d}" th:text="${d}"></option>
+                                          </select>
+
+                                          <span th:if="${#fields.hasErrors('yearNumber')}" th:errors="*{yearNumber}" class="errorRed"></span>
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                   <td>
+                                          Comment
+                                   </td>
+
+                                   <td>
+                                          <textArea th:field="*{commentArea}" cols="30" rows="5" maxlength="100" placeholder="Type something about yourself" ></textArea>
+                                   </td>
+                            </tr>
+                            
+                    </table>
+                     
+                      <!--REGISTRATION TABLE LOWER SIDE--> 
+                    <table style="background-color:#FFFFE0; border: 2px solid black;">
+                            <tr>
+                                   <td>
+                                          I have read over the documents and rules<sup class="mandatoryField">*</sup> 
+                                   </td>
+                                   
+                                   <td style="vertical-align: bottom;">
+                                          <input type="checkbox" th:field="*{readDoc}">
+                                          <span th:if="${#fields.hasErrors('readDoc')}" th:errors="*{readDoc}" class="errorRed"></span>
+                                   </td>
+                            </tr>
+                            
+                            <tr>
+                                   
+                                   <td>
+                                         Which date you want to go back?
+                                   </td>
+                                   
+                                   <td>
+                                          <select th:field="*{DateToTrip}">
+                                                 <option th:each="item : ${dates_from_history}" th:value="${item.value}" th:text="${item.display}"></option>
+                                          </select>
+                                   </td>
+                            </tr>
+                            
+                            <tr>   
+                                   <td>
+                                          <button style="border-color: chartreuse;" type="submit" class="own_button_style">LOGIN</button>
+                                          <button style="border-color: aqua;" type="reset" class="own_button_style">RESET &#8623;</button>
+                                   </td>
+                            </tr>
+                            
+                     </table>
+                     
+              </form><br></br>
+       
+       
+        <!--WORLD2 LOGIN WINDOW--> 
+       <form th:action="@{/}" th:object="${Obj}" method="post">
+
+              <table style="background-color:#FFFFE0; border: 2px solid black;">
+                     
+                     <tr>
+                            <td>
+                                   <span style="color:purple; font-weight: bold; font-size: 20px;" th:text=" 'World2 login' "></span>
+                            </td>
+                     </tr>
+
+                     <tr>
+                            <td>
+                                   Username<sup class="mandatoryField">*</sup>
+                                   <input type="text" th:field="*{authWorld2UserName}" title="Kerem a nevét!" placeholder="Type your name" th:errorclass="errorField">
+                            </td>
+                     </tr>
+
+                     <tr>
+                            <td>
+                                   Password<sup class="mandatoryField">*</sup>
+                                   <input type="password" th:field="*{authWorld2Password}" th:errorclass="errorField">
+                            </td>
+                     </tr>
+
+                     <tr>
+                            <td>
+                                   <span th:if="${#fields.hasErrors('authWorld2UserName')}" th:errors="*{authWorld2UserName}" class="errorRed"></span>
+                                   <span th:if="${#fields.hasErrors('authWorld2Password')}" th:errors="*{authWorld2Password}" class="errorRed"></span>
+                            </td>
+                     </tr>
+
+                     <tr>
+                            <td>
+                                   <button style="border-color: chartreuse;" type="submit" class="own_button_style">JUMP TO WORLD2</button><br></br>
+                            </td>
+                     </tr>
+
+              </table>
+
+       </form><br></br>
+       
+       
+       <!--WORLD3 LOGIN WINDOW--> 
+       <form th:action="@{/}" th:object="${Obj}" method="post">
+
+              <table style="background-color:#FFFFE0; border: 2px solid black;">
+                     
+                     <tr>
+                            <td>
+                                   <span style="color:purple; font-weight: bold; font-size: 20px;" th:text=" 'World3 login' "></span>
+                            </td>
+                     </tr>
+
+                     <tr>
+                            <td>
+                                   Username<sup class="mandatoryField">*</sup>
+                                   <input type="text" th:field="*{authWorld3UserName}" title="Kerem a nevét!" placeholder="Type your name" th:errorclass="errorField">
+                            </td>
+                     </tr>
+
+                     <tr>
+                            <td>
+                                   Password<sup class="mandatoryField">*</sup>
+                                   <input type="password" th:field="*{authWorld3Password}" th:errorclass="errorField">
+                            </td>
+                     </tr>
+
+                     <tr>
+                            <td>
+                                   <span th:if="${#fields.hasErrors('authWorld3UserName')}" th:errors="*{authWorld3UserName}" class="errorRed"></span>
+                                   <span th:if="${#fields.hasErrors('authWorld3Password')}" th:errors="*{authWorld3Password}" class="errorRed"></span>
+                            </td>
+                     </tr>
+
+                     <tr>
+                            <td>
+                                   <button style="border-color: chartreuse;" type="submit" class="own_button_style">JUMP TO WORLD3 </button><br></br>
+                            </td>
+                     </tr>
+
+              </table>
+
+       </form><br></br>
+
+       <div>
+              <a style="text-decoration: none;" th:href="@{/Multiverse}" class="own_button_style">JUMP TO MULTIVERSE &#8669; </a><br></br>
+       </div> 
+              
+              <!--<img th:src="@{/images/mcdonalds-fries-small.jpg}" height="500px;"/>-->
+
+       <footer>
+           <h1 align=center th:text="'------------This is the end of page------------'"></h1>
+       </footer>
+
+</body>
+    
+</html>

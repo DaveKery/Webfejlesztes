@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+       <head>
+
+              <title>&#128375; World2</title>
+              <meta charset="UTF-8">
+
+                     <style type="text/css">
+
+                            body {
+                                   background-image: url('/images/world2.jpg');
+                                   height:500px;
+                                   background-repeat: no-repeat;
+                                   background-attachment: fixed;
+                            }
+
+                            h1 {
+                                   color:white;
+                                   font-size:20px;
+                            }
+
+                            a:link {
+                                   color:white;
+                            }
+
+                            a:visited {
+                                   color:white;
+                            }
+
+                            a:hover {
+                                   color:red;
+                            }
+
+                            a:active {
+                                   color:springgreen;
+                            }
+
+                            .link_button:hover, .link_button:active {
+                                   background-color: red;
+                                   color: white;
+                            }
+
+                            div {
+                                   color:white;
+                            }
+
+                            .errorRed {
+                                   color:red;
+                                   font-size:15px;
+                            }
+
+                            .TABLE {
+                                   color:black;
+                                   border:1px solid black;
+                                   background-color:white;
+                            }
+
+                            footer{               /* footer position to the bottom of page */
+                                   position:fixed;
+                                   bottom: 0;
+                                   height: 50px;
+                            }
+
+                     </style>
+
+       </head>
+
+       <body> 
+
+              <h1>It is great to see you again Tobey Maguire!</h1>
+
+              <form th:action="@{/World2}" th:object="${spidermanDataObject}" method="post">
+
+                     <tr>
+                            <td>
+                                   <b style="color:orange;" th:text=" 'Following movies are watchable:' "></b>
+                                   <div th:each="movie : ${filmCimek}">
+                                          <span th:text="${movie.title}"></span>
+                                   </div>
+                                   <p style="color:white;" th:text=" '[Number of movies: ' + ${NumberOfMovies} + ']' "></p>
+                            </td>
+                     </tr>
+
+                     <!--pressing a ShowMe button will store every date into objects in this form, and lead us to PostMapping handler method-->
+                     <tr>
+                            <td>
+                                   <br></br>
+                                   <button type="submit">Show Data</button> 
+                                   <br></br>
+                            </td>
+                     </tr>
+
+                     <!-- OUTER TABLE -->
+                     <table style="background-color:#FFFFE0;">
+
+                            <tr>
+                                   <td>
+                                          <!-- INNER TABLE1 -->
+                                          <table style="border:4px solid black; background-color:white; table-layout:fixed; width: 600px;">
+
+                                                 <b> <span style="color:#ff00f0; background-color:black;" th:text=" 'Choose your movie from the drop-down list below' "></span>
+                                                        <select th:field="*{chosenMovieFromCinema}">
+                                                               <option th:each="movie : ${filmCimek}" th:value="${movie.title}" th:text="${movie.title}"></option>
+                                                        </select>
+                                                 </b>
+
+                                                 <tr>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Title</th>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Cinema</th>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Release Date</th>
+                                                 </tr>
+
+                                                 <tr>
+                                                        <div th:each="data : ${valasztottFilmCimListabol}"> 
+                                                               <td class="TABLE">  <span th:text="${data.title}"></span> </td>
+                                                               <td class="TABLE"> <span th:text="${data.cinema}"></span> </td>
+                                                               <td class="TABLE"> <span th:text="${data.releaseDate}"></span> </td>
+                                                        </div>
+                                                 </tr>
+
+                                          </table>    
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                   <td>
+                                          <!-- INNER TABLE2 -->
+                                          <table style="border:4px solid black; background-color:white; table-layout:fixed; width: 600px;">
+
+                                                 <!-- 'chosenMovieByID' field has error, if 'moviesDTO' instance is null in validateMoviesTableByID method in ValidatorService class    OR    'chosenMovieByID' was not given by user  -->
+                                                 <br></br>
+                                                 <b style="color:#ff00f0; background-color:black;" th:text=" 'Choose a movie by giving an ID'  "></b>
+                                                 <span>
+                                                        <input type="text" th:field="*{chosenMovieByID}" size="10" maxlength="1"/>
+                                                 </span>
+                                                 <span th:if="${#fields.hasErrors('chosenMovieByID')}" th:errors="*{chosenMovieByID}" class="errorRed"></span>
+                                                 
+
+                                                 <tr>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Title</th>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Cinema</th>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Release Date</th>
+                                                 </tr>
+
+                                                 <tr>
+                                                        <div th:each="data : ${valasztottFilmIDSzerint}">
+                                                               <td class="TABLE">  <span th:text="${data.title}"></span> </td>
+                                                               <td class="TABLE"> <span th:text="${data.cinema}"></span> </td>
+                                                               <td class="TABLE"> <span th:text="${data.releaseDate}"></span> </td>
+                                                        </div>
+                                                 </tr>
+
+                                          </table>
+                                   </td>
+                            </tr>
+
+                            <tr>
+                                   <td>
+                                          <!-- INNER TABLE3 -->
+                                          <table style="border:4px solid black; background-color:white; table-layout:fixed; width: 600px;">
+
+                                                 <!-- 'chosenMovieByTitle' field has error, if 'moviesDTO' instance is null in validateMoviesTableByTITLE method in ValidatorService class    OR    'chosenMovieByTitle' was not given by user  -->
+                                                 <br></br>
+                                                 <b style="color:#ff00f0; background-color:black;" th:text=" 'Choose a movie by giving a TITLE'  "></b>
+                                                 <span>
+                                                        <input type="text" th:field="*{chosenMovieByTitle}" size="40" maxlength="30"/>
+                                                 </span>
+                                                 <span th:if="${#fields.hasErrors('chosenMovieByTitle')}" th:errors="*{chosenMovieByTitle}" class="errorRed"></span>
+
+                                                 <tr>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Title</th>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Cinema</th>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Release Date</th>
+                                                 </tr>
+
+                                                 <tr>
+                                                        <div th:each="data : ${valasztottFilmTitleSzerint}">
+                                                               <td class="TABLE">  <span th:text="${data.title}"></span> </td>
+                                                               <td class="TABLE"> <span th:text="${data.cinema}"></span> </td>
+                                                               <td class="TABLE"> <span th:text="${data.releaseDate}"></span> </td>
+                                                        </div>
+                                                 </tr>
+
+                                          </table>
+                                   </td>
+                            </tr>
+                            
+                            <tr>
+                                   <td>
+                                          <!-- INNER TABLE4 -->
+                                          <table style="border:4px solid black; background-color:white; table-layout:fixed; width: 600px;">
+                                                 
+                                                 <br></br>
+                                                 <div style="color:#ff00f0; background-color:black; font-weight:bold;" th:text=" 'Type values into the textboxes that you want to insert for a new Movie data!'  "></div>
+                                                 
+                                                 <tr>
+                                                        <td>
+                                                               <span style="color:#ff00f0; background-color:black; font-weight:bold;" th:text=" 'id'  "></span>
+                                                               <input type="text" th:field="*{insertedID}" size="30" maxlength="2"/>
+                                                               <span th:if="${#fields.hasErrors('insertedID')}" th:errors="*{insertedID}" class="errorRed"></span>
+                                                        </td>
+                                                 </tr>
+                                                 
+                                                 <tr>
+                                                        <td>
+                                                               <span style="color:#ff00f0; background-color:black; font-weight:bold;" th:text=" 'title'  "></span>
+                                                               <input type="text" th:field="*{insertedTitle}" size="30" maxlength="20"/>
+                                                               <span th:if="${#fields.hasErrors('insertedTitle')}" th:errors="*{insertedTitle}" class="errorRed"></span>
+                                                        </td>
+                                                 </tr>
+                                                 
+                                                 <tr>
+                                                        <td>
+                                                               <span style="color:#ff00f0; background-color:black; font-weight:bold;" th:text=" 'cinema'  "></span>
+                                                               <input type="text" th:field="*{insertedCinema}" size="30" maxlength="20"/>
+                                                               <span th:if="${#fields.hasErrors('insertedCinema')}" th:errors="*{insertedCinema}" class="errorRed"></span>
+                                                        </td>
+                                                 </tr>
+                                                        
+                                                 <tr>
+                                                        <td>
+                                                               <span style="color:#ff00f0; background-color:black; font-weight:bold;" th:text=" 'release date'  "></span>
+                                                               <input type="text" th:field="*{insertedReleaseDate}" size="30" maxlength="20"/>
+                                                               <span th:if="${#fields.hasErrors('insertedReleaseDate')}" th:errors="*{insertedReleaseDate}" class="errorRed"></span>
+                                                        </td>
+                                                 </tr>
+                                                       
+                                                 <tr>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Title</th>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Cinema</th>
+                                                        <th style="border:1px solid black; background-color:grey; color:blue;">Release Date</th>
+                                                 </tr>
+
+                                                 <tr>
+                                                        <div th:each="data : ${insertedSpidermanFilm}">
+                                                               <td class="TABLE">  <span th:text="${data.title}"></span> </td>
+                                                               <td class="TABLE"> <span th:text="${data.cinema}"></span> </td>
+                                                               <td class="TABLE"> <span th:text="${data.releaseDate}"></span> </td>
+                                                        </div>
+                                                 </tr>
+                                                 
+                                          </table>
+                                   </td>
+                            </tr>
+
+                     </table>
+
+              </form>
+
+<!--              <footer>
+                     <div> <a style="font-size:2rem;"  th:href="@{/}"> Back to Application form </a> </div>
+              </footer>-->
+
+              <div> <a style="font-size:2rem;"  th:href="@{/}"> Back to Application form </a> </div>
+
+       </body>
+
+</html>

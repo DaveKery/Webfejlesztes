@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+       <head>
+
+              <title>&#129380; Liquid Consumption</title>
+              <meta charset="UTF-8">
+
+                     <style type="text/css">
+
+                            body {
+                                   background-image: url('/images/liquid.jpg');
+                                   height:500px;
+                                   background-repeat: no-repeat;
+                                   background-attachment: fixed;
+                            }
+
+                            h1 {
+                                   color:black;
+                                   font-size:20px;
+                            }
+
+                            a:link, a:visited {         
+                                   color:black;
+                            }
+
+                            a:hover {
+                                   color:red;
+                            }
+
+                            a:active {
+                                   color:springgreen;
+                            }
+
+                            table, th, td{
+                                   border: 1px solid red;
+                            }
+                            
+                            footer{               /* footer position to the bottom of page */
+                                   position:fixed;
+                                   bottom: 0;
+                                   height: 50px;
+                            }
+                            
+                            .dropbtn {
+                                   background-color: #00cc7a;
+                                   color: white;
+                                   padding: 16px;
+                                   font-size: 16px;
+                                   border: none;
+                            }
+                            
+                            .dropdown {
+                                   position: relative;
+                                   display: inline-block;
+                            }
+
+                            .dropdown-content {
+                                   display: none;
+                                   position: absolute;
+                                   background-color: #f1f1f1;
+                                   min-width: 200px;           /* width of text in a drop-down row */
+                                   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                                   z-index: 1;
+                            }
+
+                            .dropdown-content a {
+                                   color: black;
+                                   padding: 12px 18px;
+                                   text-decoration: none;
+                                   display: block;
+                            }
+                            
+                            .dropdown-content a:hover {
+                                   background-color: #ddd;
+                            }
+
+                            .dropdown:hover .dropdown-content {
+                                   display:table-cell;
+                            }
+
+                            .dropdown:hover .dropbtn {
+                                   background-color: #00b36b;
+                            }
+
+                     </style>
+
+       </head>
+
+       <body>
+
+              <h1 style="background-color:white;">An introduction for a healthier life with drinking different kind of beverages and the corresponding amount for individuals...</h1>
+              
+              <!--Worlds drop-down button-->
+              <div class="dropdown">
+                     
+                     <button class="dropbtn">Worlds</button>
+                     
+                     <div class="dropdown-content">
+                            <a th:href="@{/}">Application form &#127968;</a>
+                            <a th:href="@{/World2}">World2 &#128375;</a>
+                            <a th:href="@{/World3}">World3 &#128375;</a>
+                            <a th:href="@{/Multiverse}">Multiverse &#127744;</a>
+                     </div>
+                     
+              </div>
+              
+              <!--Health drop-down button-->
+              <div class="dropdown">
+                     
+                     <button class="dropbtn">Health</button>
+                     
+                     <div class="dropdown-content">
+                            <a th:href="@{/Vitamins}">Vitamins &#128138;</a>
+                            <a th:href="@{/Liquid}">Liquid &#129380;</a>
+                            <a th:href="@{/Food}">Food Consumption &#129386;</a>
+                     </div>
+                     
+              </div>
+
+       </body>
+
+</html>
