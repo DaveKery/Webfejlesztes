@@ -92,53 +92,29 @@ public class DemoApplication extends ValidatorService {
         @GetMapping("/")
         public String showForm(Model model) {
                
-               List<CustomerDTO> allCustomer = customerDAO.getAllCustomer();
+               RegistrationForm registrationForm = new RegistrationForm();
                
-               CustomerDTO myCustomer1 = customerDAO.getCustomerByID(1);
-               CustomerDTO myCustomer28 = customerDAO.getCustomerByID(28);
-               
-               CustomerDTO ujCustomer = new CustomerDTO();
-               ujCustomer.setName("Arnold");
-               ujCustomer.setId(5l);
-               ujCustomer.setLokacio("Győr");
-               ujCustomer.setBirthday(new Date());
-               
-               customerDAO.insertCustomer(ujCustomer);
-               
-               ElementService inst = new ElementService();   // ElementService OBJECT 
-               inst.setRadioResult("1");
+               registrationForm.setRadioResult("1");
       
-               model.addAttribute("Obj", inst);
-               model.addAttribute("allCustomer", allCustomer);  
+               model.addAttribute("Obj", registrationForm);  
                
                return "view";
         }
         
         @PostMapping("/")
-        public String submitForm(@ModelAttribute("Obj") ElementService peldany, BindingResult result, Model model) {
+        public String submitForm(@ModelAttribute("Obj") RegistrationForm registrationForm, BindingResult result, Model model) {
                
-               LoginDTO world2Authentication = world2LoginDAO.getLoginValuesForWorld2(peldany.getAuthWorld2UserName(), peldany.getAuthWorld2Password());
-               if (validateLoginWorld2(world2Authentication, result, peldany)) {
-                      
-                      List<MoviesDTO> moviesTitles = movieDAO.getMovieTitles();     // for printing the watchable film titles for user
-               
-                      ElementService inst = new ElementService();   
-
-                      model.addAttribute("spidermanDataObject", inst);
-                      model.addAttribute("filmCimek", moviesTitles);
-                      model.addAttribute("NumberOfMovies", movieDAO.getNumberOfMovies()); // for printing the number of watchable film titles for user
-                      
-                      return "world2_view";
+               LoginDTO world2Authentication = world2LoginDAO.getLoginValuesForWorld2(registrationForm.getAuthWorld2UserName(), registrationForm.getAuthWorld2Password());
+               if (validateLoginWorld2(world2Authentication, result, registrationForm)) {
+                      return "redirect:/World2";  // szerver visszaválaszol a böngészőnek, és egy másik URL-re irányítja át (átredirektáljuk az alábbi URL-re)
                }
                
-               LoginDTO world3Authentication = world3LoginDAO.getLoginValuesForWorld3(peldany.getAuthWorld3UserName(), peldany.getAuthWorld3Password());
-               if (validateLoginWorld3(world3Authentication, result, peldany)) {
-                      //showWorld3(model);        // calling this GetMapping handler method will lead us to World3 by the same URL: http://localhost:8080/  and not http://localhost:8080/World3
-                      //return "world3_view";      // TODO: correct the following -> it does not lead us to the correct URI: http://localhost:8080/World3   just goes to http://localhost:8080/ but why???
+               LoginDTO world3Authentication = world3LoginDAO.getLoginValuesForWorld3(registrationForm.getAuthWorld3UserName(), registrationForm.getAuthWorld3Password());
+               if (validateLoginWorld3(world3Authentication, result, registrationForm)) {
                       return "redirect:/World3";   // szerver visszaválaszol a böngészőnek, és egy másik URL-re irányítja át (átredirektáljuk az alábbi URL-re)
                }
                
-               if (validateRegistration(peldany, result)) {
+               if (validateRegistration(registrationForm, result)) {
                       return "display"; 
                }
                
@@ -159,47 +135,48 @@ public class DemoApplication extends ValidatorService {
                
                List<MoviesDTO> moviesTitles = movieDAO.getMovieTitles();     // for printing the watchable film titles for user
                
-               ElementService inst = new ElementService();   
-
-               model.addAttribute("spidermanDataObject", inst);
+               model.addAttribute("spidermanDataObject", new MoviesForm());
                model.addAttribute("filmCimek", moviesTitles);
                model.addAttribute("NumberOfMovies", movieDAO.getNumberOfMovies()); // for printing the number of watchable film titles for user
                
-              return "world2_view";
+               return "world2_view";
         }
         
         @PostMapping("/World2")
-        public String submitWorld2(@ModelAttribute("spidermanDataObject") ElementService element, BindingResult result, Model model){
+        public String submitWorld2(@ModelAttribute("spidermanDataObject") MoviesForm moviesForm, BindingResult result, Model model){
+               
+               // TODO: If user create a new record with null values of 'storyText' and 'watchLater' will cause an error ??? look up the problem !!!
                
                List<MoviesDTO> moviesTitles = movieDAO.getMovieTitles();     // for printing the watchable film titles for user
                
-               MoviesDTO currentMovieFromTitlesList = movieDAO.getMovieDataFromTitlesList(element.getChosenMovieFromCinema());
+               MoviesDTO currentMovieFromTitlesList = movieDAO.getMovieDataFromTitlesList(moviesForm.getChosenMovieFromCinema());
                model.addAttribute("valasztottFilmCimListabol", currentMovieFromTitlesList);
                
-               MoviesDTO currentMovieByID = movieDAO.getMovieDataByID(element.getChosenMovieByID());     // after calling GetMapping handler method, we passes a given ID into the 'chosenMovieByID' field 
+               MoviesDTO currentMovieByID = movieDAO.getMovieDataByID(moviesForm.getChosenMovieByID());     // after calling GetMapping handler method, we passes a given ID into the 'chosenMovieByID' field 
                model.addAttribute("valasztottFilmIDSzerint", currentMovieByID);
-               validateMoviesTableByID(currentMovieByID, result, element);        // VALIDATION: 'chosenMovieByID' field is empty or exists 'Movies' table at all
+               validateMoviesTableByID(currentMovieByID, result, moviesForm);        // VALIDATION: 'chosenMovieByID' field is empty or exists 'Movies' table at all
               
-               MoviesDTO currentMovieByTitle = movieDAO.getMovieDataByTitle(element.getChosenMovieByTitle());     // after calling GetMapping handler method, we passes a given TITLE into the 'chosenMovieByTitle' field 
+               MoviesDTO currentMovieByTitle = movieDAO.getMovieDataByTitle(moviesForm.getChosenMovieByTitle());     // after calling GetMapping handler method, we passes a given TITLE into the 'chosenMovieByTitle' field
                model.addAttribute("valasztottFilmTitleSzerint", currentMovieByTitle);
-               validateMoviesTableByTITLE(currentMovieByTitle, result, element);        // VALIDATION: 'chosenMovieByTitle' field is empty or exists 'Movies' table at all
+               validateMoviesTableByTITLE(currentMovieByTitle, result, moviesForm);        // VALIDATION: 'chosenMovieByTitle' field is empty or exists 'Movies' table at all
               
-               // validate() ide kell, mivel előbb kell letesztelni, hogy jó típusú értékek vannak-e bene, és utána végrehajtani az INSERT parancsot
-               if(validateInsertValues(element, result)){
-                     MoviesDTO insertedMovie = movieDAO.insertMovieIntoMoviesTable(element.getInsertedID(), element.getInsertedTitle(), element.getInsertedCinema(), element.getInsertedReleaseDate());
-                     model.addAttribute("insertedSpidermanFilm", insertedMovie);   // this model used for presenting title,cinema and releaseDate that was just inserted by user
+               // validate() ide kell, mivel előbb kell letesztelni, hogy jó típusú értékek vannak-e benne, és utána végrehajtani az INSERT parancsot
+               if(validateInsertValues(moviesForm, result)){
+                     MoviesDTO insertedMovie = movieDAO.insertMovieIntoMoviesTable(moviesForm.getInsertedID(), moviesForm.getInsertedTitle(), moviesForm.getInsertedCinema(), moviesForm.getInsertedReleaseDate());
+                     model.addAttribute("insertedSpidermanFilm", insertedMovie);   // this model is used for presenting title,cinema and releaseDate that was just inserted by user
                }
-               
-//               MoviesDTO insertedMovie = movieDAO.insertMovieIntoMoviesTable(element.getInsertedID(), element.getInsertedTitle(), element.getInsertedCinema(), element.getInsertedReleaseDate());
-//               model.addAttribute("insertedSpidermanFilm", insertedMovie);   // this model used for presenting title,cinema and releaseDate that was just inserted by user
               
                model.addAttribute("filmCimek", moviesTitles);
                model.addAttribute("NumberOfMovies", movieDAO.getNumberOfMovies());  // for printing the number of watchable film titles for user
                
-               return "world2_view";             // @PostMapping will keep user on the same page after clicking on submit button
+               return "world2_view";             // @PostMapping will keep user on the same page after clicking on submit button !!!
         }
         
+        // TODO: make screenshots of ...Form.java and why is it important to use them
         
+        // TODO: make screenshots of redirect:/ usage
+        
+        // TODO: make screenshots of .css file access
         
         
         /* World3 handler methods
@@ -207,45 +184,21 @@ public class DemoApplication extends ValidatorService {
         @GetMapping("/World3")
         public String showWorld3(Model model){
                
-               List<MoviesDTO> eachMovieData = movieDAO.getEachMovieData();           // gets false values for each 'watchLater' variables 
-               
-               //List<Boolean> watchedFilmsStatus = movieDAO.getwatchLaterStatuses();        // ??? ez nem biztos hogy kell ???
-               
-               // TODO: create a list of checkboxes, that will be presented in GetMapping first, user will be able to tick them, then pass it to PostMapping secondly without 500 Internal Server Error!!!
-               List<Boolean> checkboxes = new ArrayList<>();
-               checkboxes.add(false);
-               checkboxes.add(false);
-               
-               ElementService inst = new ElementService();
+               List<MoviesDTO> eachMovieData = movieDAO.getEachMovieData();        // getting each date from each records from 'Movies' table      
                
                model.addAttribute("filmAdatok", eachMovieData);
-               model.addAttribute("Obj", inst);
-               model.addAttribute("checkboxes", checkboxes);
                model.addAttribute("moviesForm", new MoviesForm());
                
               return "world3_view";
         }
         
         @PostMapping("/World3")
-        public String submitWorld3(@ModelAttribute("moviesForm") MoviesForm moviesForm, BindingResult result, Model model){   // ??? PostMapping handler metódusba nem lehet @ModelAttribute("filmAdatok") List<MoviesDTO> xxx beletenni?     -> https://stackoverflow.com/questions/55855987/how-to-use-a-list-as-a-model-attribute-in-spring
+        public String submitWorld3(@ModelAttribute("moviesForm") MoviesForm moviesForm, BindingResult result, Model model){   
                
-               List<MoviesDTO> eachMovieData = movieDAO.getEachMovieData();           // gets false values for each 'watchLater' variables 
-               
-               // iterate through checkboxes and check which one is ticked/not ticked
-               /*for(int i = 0; i < checkboxes.size(); i++){            
-                     
-                     if (checkboxes.get(i) == true) {
-                            eachMovieData.get(i).setWatchLater(true);        // if checkbox is ticked, then set that specific number of 'watchLater' of 'eachMovieData' to true
-                     }
-               }*/
-                 
-               ElementService inst = new ElementService();
-               
+               List<MoviesDTO> eachMovieData = movieDAO.getEachMovieData();
                model.addAttribute("filmAdatok", eachMovieData);
-               model.addAttribute("Obj", inst);  
-               model.addAttribute("checkboxStatuses",movieDAO.getWatchedFilms(eachMovieData)); // get String values of 'title' values from each MoviesDTO in 'eachMovieData' List
 
-               return "world3_view";
+               return "world3_view";             // @PostMapping will keep user on the same page after clicking on submit button !!!
         }
 
         

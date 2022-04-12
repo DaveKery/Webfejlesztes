@@ -1,13 +1,14 @@
 package com.example.demo;
+
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ElementService {             // TODO: ezt szétválasztani külön ...Form.java oszutályokra, azokon belül legyenek külön a HTML fájlokra vonatkozó változók
+public class RegistrationForm {
        
-       // stuffs in view.html 
+        // stuffs in view.html 
        private String firstName;
        private String lastName;
        private String userPassword;
@@ -24,21 +25,7 @@ public class ElementService {             // TODO: ezt szétválasztani külön 
        private String authWorld3UserName;
        private String authWorld3Password;
        
-       // stuffs in World2.html
-       private String chosenSpiderMovieColumn;
-       private String chosenMovieFromCinema;
-       private Integer chosenMovieByID;
-       private String chosenMovieByTitle;
-       private Integer insertedID;
-       private String insertedTitle;
-       private String insertedCinema;
-       private Date insertedReleaseDate = new Date();
-       
-       // stuffs in World3.html
-       private String moviesRadioWorld3;
-       private boolean check;
-       
-       public ElementService() {
+       public RegistrationForm(){
               
        }
        
@@ -117,4 +104,5 @@ public class ElementService {             // TODO: ezt szétválasztani külön 
                      return false;
               }
        }
+       
 }

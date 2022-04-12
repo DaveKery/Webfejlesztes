@@ -2,19 +2,16 @@ package com.example.demo;
 
 import com.example.DAO.LoginDTO;
 import com.example.DAO.MoviesDTO;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import org.springframework.validation.BindingResult;
 
 public class ValidatorService {
 
-       public static boolean validateRegistration(ElementService inst, BindingResult result) {     
+       public static boolean validateRegistration(RegistrationForm registrationForm, BindingResult result) {     
               
               boolean hasNoError = true;
               
               // it is true if user leaves any of the fields (firstName, lastName, userPassword, yearNumber, readDoc) empty that means 'inst' is NULL and all of its fields are as well!!!
-              if(inst.getFirstName() == null || inst.getLastName() == null || inst.getUserPassword() == null || inst.getDatum() == null || inst.getRadioResult() == null || inst.getCommentArea() == null || inst.getYearNumber() == null || inst.getMonthNumber() == null || inst.getDayNumber() == null || inst.getDateToTrip() == null){
+              if(registrationForm.getFirstName() == null || registrationForm.getLastName() == null || registrationForm.getUserPassword() == null || registrationForm.getDatum() == null || registrationForm.getRadioResult() == null || registrationForm.getCommentArea() == null || registrationForm.getYearNumber() == null || registrationForm.getMonthNumber() == null || registrationForm.getDayNumber() == null || registrationForm.getDateToTrip() == null){
                      result.rejectValue("firstName", "FieldIsEmpty", "This is the default error message!");
                      result.rejectValue("lastName", "FieldIsEmpty", "This is the default error message!");
                      result.rejectValue("userPassword", "FieldIsEmpty", "This is the default error message!");
@@ -23,43 +20,43 @@ public class ValidatorService {
                      return false;
               }
 
-              if (inst.getFirstName().isEmpty()) {
+              if (registrationForm.getFirstName().isEmpty()) {
                      result.rejectValue("firstName", "FieldIsEmpty", "This is the default error message!");
                      hasNoError = false;
               } 
-              else if (inst.isFirstNameInvalid()) {
+              else if (registrationForm.isFirstNameInvalid()) {
                      result.rejectValue("firstName", "InvalidFirstName", "This is the default error message!");
                      hasNoError = false;
               }
 
-              if (inst.getLastName().isEmpty()) {
+              if (registrationForm.getLastName().isEmpty()) {
                      result.rejectValue("lastName", "FieldIsEmpty", "This is the default error message!");
                      hasNoError = false;
               } 
-              else if (inst.isLastNameInvalid()) {
+              else if (registrationForm.isLastNameInvalid()) {
                      result.rejectValue("lastName", "InvalidLastName", "This is the default error message!");
                      hasNoError = false;
               }
 
-              if (inst.getUserPassword().isEmpty()) {
+              if (registrationForm.getUserPassword().isEmpty()) {
                      result.rejectValue("userPassword", "FieldIsEmpty", "This is the default error message!");
                      hasNoError = false;
               } 
-              else if (!(inst.isPasswordValid())) {
+              else if (!(registrationForm.isPasswordValid())) {
                      result.rejectValue("userPassword", "InvalidPassword", "This is the default error message!");
                      hasNoError = false;
               } 
-              else if (!(inst.isPasswordLengthValid())) {
+              else if (!(registrationForm.isPasswordLengthValid())) {
                      result.rejectValue("userPassword", "InvalidLengthOfPassword", "This is the default error message!");
                      hasNoError = false;
               }
 
-              if (!(inst.isUserOldEnough())) {
+              if (!(registrationForm.isUserOldEnough())) {
                      result.rejectValue("yearNumber", "UserIsTooYoung", "This is the default error message!");
                      hasNoError = false;
               }
 
-              if (inst.isReadDoc() == false) {
+              if (registrationForm.isReadDoc() == false) {
                      result.rejectValue("readDoc", null, "You have to read and accept the mandatory documents!");
                      hasNoError = false;
               }
@@ -67,53 +64,53 @@ public class ValidatorService {
               return hasNoError;
        }
 
-       public static void validateMoviesTableByID(MoviesDTO moviesDTO, BindingResult result, ElementService inst) {
+       public static void validateMoviesTableByID(MoviesDTO moviesDTO, BindingResult result, MoviesForm moviesForm) {
 
               // TODO: Why does it keep writing the system error if we do not type numeric character(s)??? ->>> Field does not contain any Integer!
 
               if (moviesDTO.idIsNotNumber){         
                      result.rejectValue("chosenMovieByID", "IDisNOTaNumberOrEmpty", "This is the default error message!");
               }
-              else if (moviesDTO == null) {      // check if returned MoviesDTO object from movieDAO.getMovieDataByID(element.getChosenMovieByID()) is null or exists in DB table
+              else if (moviesDTO == null) {      // check if returned MoviesDTO object from movieDAO.getMovieDataByID(moviesForm.getChosenMovieByID()) is null or exists in DB table
                      result.rejectValue("chosenMovieByID", "IDnotExists", "This is the default error message!");
               }
        }
 
-       public static void validateMoviesTableByTITLE(MoviesDTO moviesDTO, BindingResult result, ElementService inst) {
+       public static void validateMoviesTableByTITLE(MoviesDTO moviesDTO, BindingResult result, MoviesForm moviesForm) {
               
               if(moviesDTO.titleIsNumber){         // static instance variable can be changed to true/false in case of 'chosenMovieByTitle' only contains integer or not just integer
                      result.rejectValue("chosenMovieByTitle", "TITLEisInteger", "This is the default error message!");
               }
-              else if (inst.getChosenMovieByTitle().isEmpty()) {
+              else if (moviesForm.getChosenMovieByTitle().isEmpty()) {
                      result.rejectValue("chosenMovieByTitle", "TITLEfieldEmpty", "This is the default error message!");
               } 
-              else if (moviesDTO == null) {      // check if returned MoviesDTO object from movieDAO.getMovieDataByID(element.getChosenMovieByID()) is null or exists in DB table
+              else if (moviesDTO == null) {      // check if returned MoviesDTO object from movieDAO.getMovieDataByID(moviesForm.getChosenMovieByID()) is null or exists in DB table
                      result.rejectValue("chosenMovieByTitle", "TITLEnotExists", "This is the default error message!");
               }
        }
        
-       public static boolean validateInsertValues(ElementService inst, BindingResult result){
+       public static boolean validateInsertValues(MoviesForm moviesForm, BindingResult result){
               
               boolean valuesAreValid = true;
               
               // TODO: If the given ID is already exist, then throw an error 
-              if(inst.getInsertedID() == null){
+              if(moviesForm.getInsertedID() == null){
                      result.rejectValue("insertedID", null, "Invalid value!");
                      valuesAreValid = false;
               }
               
               // TODO: If the given TITLE is already exist, then throw an error 
-              if(inst.getInsertedTitle().isEmpty()){
+              if(moviesForm.getInsertedTitle().isEmpty()){
                      result.rejectValue("insertedTitle", null, "Empty title value!");
                      valuesAreValid = false;
               }
               
-              if(inst.getInsertedCinema().isEmpty()){
+              if(moviesForm.getInsertedCinema().isEmpty()){
                      result.rejectValue("insertedCinema", null, "Empty cinema value!");
                      valuesAreValid = false;
               }
               
-              if(inst.getInsertedReleaseDate() == null){
+              if(moviesForm.getInsertedReleaseDate() == null){
                      result.rejectValue("insertedReleaseDate", null, "Invalid value!");
                      valuesAreValid = false;
               }
@@ -126,7 +123,7 @@ public class ValidatorService {
               
        }
        
-       public static boolean validateLoginWorld2(LoginDTO loginDTO, BindingResult result, ElementService inst){
+       public static boolean validateLoginWorld2(LoginDTO loginDTO, BindingResult result, RegistrationForm registrationForm){
               
               // loginDTO is null if any of the input fields 'authWorld2UserName' or 'authWorld2Password' are not proper for getLoginValuesForWorld2() at queryForObject() method
               if (loginDTO == null) {        
@@ -138,7 +135,7 @@ public class ValidatorService {
               return true;
        }
        
-       public static boolean validateLoginWorld3(LoginDTO loginDTO, BindingResult result, ElementService inst){
+       public static boolean validateLoginWorld3(LoginDTO loginDTO, BindingResult result, RegistrationForm registrationForm){
               
               // loginDTO is null if any of the input fields 'authWorld3UserName' or 'authWorld3Password' are not proper for getLoginValuesForWorld3() at queryForObject() method
               if (loginDTO == null) {        

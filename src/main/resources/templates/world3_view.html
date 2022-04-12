@@ -51,21 +51,7 @@
               <h1>It is great to see you again Andrew Garfield!</h1>
               <p><a style="font-size:1rem;"  th:href="@{/}"> Back to Application form </a></p>
               
-              <!--EZ ÍGY MÚŰKÖDIKKK 1 --> 
-<!--              <form th:action="@{/World3}" th:object="${Obj}">
-                     <input type="checkbox" th:field="*{readDoc}"/>
-              </form>-->
-
-              <!--EZ ÍGY MŰKÖDIKKK--> 
-<!--              <form th:action="@{/World3}" th:object="${Obj}">
-
-                     <div th:each="movie : ${filmAdatok}">
-                            <input type="checkbox" th:field="*{check}"/>
-                     </div>
-
-              </form>-->
-              
-              <form th:action="@{/World3}" th:object="${Obj}" method="post">
+              <form th:action="@{/World3}" th:object="${moviesForm}" method="post">
 
                             <!-- Actual Movies in cinema with descriptions TABLE -->
                             <table style="background-color:#f5f5f0;">
@@ -85,7 +71,7 @@
                                                         <div th:text="${movie.releaseDate}"></div>
                                                         <div style="font-size:12px;" th:text="${movie.storyText}"></div><br>
 
-                                                        <input type="checkbox" th:value="${movie.id}" name="kedvencFilm"/>           name "kedvencFilm" névbe fogja tárolni, azaz "kedvencFilm" fogja tárolni mint List a movie.id-kat!!!
+                                                        <input type="checkbox" th:value="${movie.title}" name="watchedMovies"/>
 
                                                         <hr>
                                                  </td>
@@ -98,7 +84,7 @@
                                           <td>
                                                  <div style="color:dodgerblue; font-weight:bold;" th:text=" 'Favourite: '  "></div>
                                                  <span style="margin-right: 20px;" th:each="item : ${moviesForWORLD3}">
-                                                        <input type="radio" th:field="${Obj.moviesRadioWorld3}" th:value="${item.value}" th:text="${item.display}"/>
+                                                        <input type="radio" th:field="${moviesForm.radioFavouriteMovie}" th:value="${item.value}" th:text="${item.display}"/>
                                                         <!--LEARN: utána nézni a radiobuttons-nek ha többet rakok ugyanolyan value-val egy lapra akkor mi a különbség és mi nem-->
                                                  </span>
                                           </td>
@@ -122,16 +108,15 @@
                                           </td>
                                    </tr>
                                    
-                                   <div th:each=" filmID : ${moviesForm.kedvencFilm}">
+                                   <div th:each=" filmTITLE : ${moviesForm.watchedMovies}">
                                           
                                           <tr>
                                                  <td>
-                                                        <div th:text="${filmID}"></div>
+                                                        <div th:text="${filmTITLE}"></div>
                                                  </td>
                                           </tr>
                                           
                                    </div>
-                                   
 
                             </table>
 
